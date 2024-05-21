@@ -34,6 +34,9 @@ const getProductBySearchTerm = async (searchTerm: string) => {
   const result = await Product.find({
     $or: [{ name: regex }, { description: regex }],
   });
+  if (result.length === 0) {
+    throw new Error('No product found for this search: ' + searchTerm);
+  }
   return result;
 };
 

@@ -4,11 +4,11 @@ import { ProductControllers } from './product.controller';
 
 const router = express.Router();
 
-router.post('/products', ProductControllers.createProduct);
-router.get('/products', ProductControllers.searchProductByTerm);
-router.get('/products', ProductControllers.getAllProducts);
-router.get('/products/:productId', ProductControllers.getSingleProduct);
-router.put('/products/:productId', ProductControllers.updateSingleProduct);
-router.delete('/products/:productId', ProductControllers.deleteProduct);
+
+router.post('/', ProductControllers.createProduct);
+router.get('/', ProductControllers.getAllProducts);
+router.get('/:productId', ProductControllers.getSingleProduct);
+router.put('/:productId', ProductControllers.updateSingleProduct);
+router.delete('/:productId', ProductControllers.deleteProduct);
 
 export const ProductRoutes = router;

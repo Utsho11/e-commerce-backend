@@ -4,47 +4,52 @@ import productValidationSchema from './product.validation';
 import { ProductService } from './product.service';
 
 const createProduct = async (req: Request, res: Response) => {
+  const { product: productData } = req.body;
   try {
-    const { product: productData } = req.body;
-
     // data validation using zod
-    console.log({ productData });
 
     const zodParseData = productValidationSchema.parse(productData);
 
-    console.log({ zodParseData });
-
     // will call service func to send this data
     const result = await ProductService.createProductIntoDB(zodParseData);
-
-    console.log({ result });
 
     res.status(200).json({
       success: true,
       message: 'Product created successfully!',
       data: result,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     res.status(500).json({
       success: false,
-      message: error.message || 'Something went wrong.',
+      message: error || 'Something went wrong.',
       error: error,
     });
   }
 };
 
 const getAllProducts = async (req: Request, res: Response) => {
+  const searchTerm = req.query.searchTerm as string;
+
   try {
-    const result = await ProductService.getAllProductsFromDB();
-    res.status(200).json({
-      success: true,
-      message: 'Products fetched successfully!',
-      data: result,
-    });
-  } catch (error: any) {
+    if (typeof searchTerm !== 'string') {
+      const result = await ProductService.getAllProductsFromDB();
+      res.status(200).json({
+        success: true,
+        message: 'Products fetched successfully!',
+        data: result,
+      });
+    } else {
+      const result = await ProductService.getProductBySearchTerm(searchTerm);
+      res.status(200).json({
+        success: true,
+        message: `Products matching search term '${searchTerm}' fetched successfully!`,
+        data: result,
+      });
+    }
+  } catch (error: unknown) {
     res.status(500).json({
       success: false,
-      message: error.message || 'Something went wrong.',
+      message: error || 'Something went wrong.',
       error: error,
     });
   }
@@ -54,17 +59,16 @@ const getSingleProduct = async (req: Request, res: Response) => {
   try {
     const { productId } = req.params;
     const result = await ProductService.getSingleProductFromDB(productId);
-    console.log({ result });
 
     res.status(200).json({
       success: true,
       message: 'Product fetched successfully!',
       data: result,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     res.status(500).json({
       success: false,
-      message: error.message || 'Something went wrong.',
+      message: error || 'Something went wrong.',
       error: error,
     });
   }
@@ -81,17 +85,16 @@ const updateSingleProduct = async (req: Request, res: Response) => {
       productId,
       zodParseData,
     );
-    console.log({ result });
 
     res.status(200).json({
       success: true,
       message: 'Product updated successfully!',
       data: result,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     res.status(500).json({
       success: false,
-      message: error.message || 'Something went wrong.',
+      message: error || 'Something went wrong.',
       error: error,
     });
   }
@@ -107,33 +110,10 @@ const deleteProduct = async (req: Request, res: Response) => {
       message: 'Product deleted successfully!',
       data: result,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     res.status(500).json({
       success: false,
-      message: error.message || 'Something went wrong.',
-      error: error,
-    });
-  }
-};
-
-const searchProductByTerm = async (req: Request, res: Response) => {
-  const { searchTerm } = req.query;
-
-  if (typeof searchTerm !== 'string') {
-    return res.status(400).json({ message: 'Invalid search term' });
-  }
-
-  try {
-    const result = await ProductService.getProductBySearchTerm(searchTerm);
-    res.status(200).json({
-      success: true,
-      message: `Products matching search term '${searchTerm}' fetched successfully!`,
-      data: result,
-    });
-  } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: error.message || 'Something went wrong.',
+      message: error || 'Something went wrong.',
       error: error,
     });
   }
@@ -145,5 +125,4 @@ export const ProductControllers = {
   getSingleProduct,
   updateSingleProduct,
   deleteProduct,
-  searchProductByTerm,
 };
