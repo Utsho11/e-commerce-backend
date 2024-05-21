@@ -32,7 +32,7 @@ const getAllOrdersFromDB = async () => {
 const getOrderByEmailFromDB = async (email: string) => {
   const result = await Order.find({ email: email });
   if (result.length === 0) {
-    throw new Error('No order found for email: ' + email);
+    throw new Error('No order found for this email: ' + email);
   }
 
   return result;

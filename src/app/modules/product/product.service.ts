@@ -14,6 +14,11 @@ const getAllProductsFromDB = async () => {
 
 const getSingleProductFromDB = async (id: string) => {
   const result = await Product.findOne({ _id: id });
+  
+  if(!result) {
+    throw new Error("Product not found");
+  }
+  
   return result;
 };
 const updateProductFromDB = async (
@@ -31,7 +36,7 @@ const updateProductFromDB = async (
     }
     return updatedData;
   } catch (error: unknown) {
-    throw new Error('Error updating product: ' + error);
+    throw new Error('Error updating product: ');
   }
 };
 

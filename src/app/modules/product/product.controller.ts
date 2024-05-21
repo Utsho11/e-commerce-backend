@@ -47,10 +47,13 @@ const getAllProducts = async (req: Request, res: Response) => {
       });
     }
   } catch (error: unknown) {
+    let errorMessage = 'Something is wrong';
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    }
     res.status(500).json({
       success: false,
-      message: error || 'Something went wrong.',
-      error: error,
+      message: errorMessage,
     });
   }
 };
@@ -66,10 +69,13 @@ const getSingleProduct = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error: unknown) {
+    let errorMessage = 'Something is wrong';
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    }
     res.status(500).json({
       success: false,
-      message: error || 'Something went wrong.',
-      error: error,
+      message: errorMessage,
     });
   }
 };
@@ -92,10 +98,13 @@ const updateSingleProduct = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error: unknown) {
+    let errorMessage = 'Something is wrong';
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    }
     res.status(500).json({
       success: false,
-      message: error || 'Something went wrong.',
-      error: error,
+      message: errorMessage,
     });
   }
 };
