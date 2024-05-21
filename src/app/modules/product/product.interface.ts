@@ -23,4 +23,4 @@ export type TProduct = {
   productImg?: string;
 };
 
-export interface ProductModel extends Model<TProduct> {};
+export interface ProductModel extends Model<TProduct> {}
