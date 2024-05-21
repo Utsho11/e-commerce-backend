@@ -27,7 +27,7 @@ const updateProductFromDB = async (
       { new: true },
     );
     if (!updatedData) {
-      throw new Error('Product not found');
+      throw new Error('Product is not found');
     }
     return updatedData;
   } catch (error: unknown) {
