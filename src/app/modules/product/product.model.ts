@@ -27,6 +27,4 @@ const productSchema = new Schema<TProduct, ProductModel>({
   productImg: { type: String },
 });
 
-
-
 export const Product = model<TProduct, ProductModel>('Product', productSchema);
