@@ -34,13 +34,13 @@ const getAllOrders = async (req: Request, res: Response) => {
         message: 'Orders fetched successfully!',
         data: result,
       });
-    }else{
+    } else {
       const result = await OrderService.getOrderByEmailFromDB(email);
-    res.status(200).json({
-      success: true,
-      message: `Orders fetched successfully for user email!`,
-      data: result,
-    });
+      res.status(200).json({
+        success: true,
+        message: `Orders fetched successfully for user email!`,
+        data: result,
+      });
     }
   } catch (error: unknown) {
     res.status(500).json({

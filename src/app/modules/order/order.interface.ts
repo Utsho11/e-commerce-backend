@@ -1,6 +1,6 @@
 // 1. Create an interface representing a document in MongoDB.
 
-import { Model } from "mongoose";
+import { Model } from 'mongoose';
 
 export type TOrder = {
   email: string;

@@ -8,5 +8,4 @@ const orderSchema = new Schema<TOrder, OrderModel>({
   quantity: { type: Number },
 });
 
-
-export const Order = model<TOrder,OrderModel>('Order',orderSchema);
+export const Order = model<TOrder, OrderModel>('Order', orderSchema);

@@ -20,13 +20,33 @@ const updateProductFromDB = async (
   id: string,
   updatedProduct: Partial<TProduct>,
 ) => {
-  const result = await Product.updateOne({ _id: id }, { $set: updatedProduct });
-  return result;
+  try {
+    const updatedData = await Product.findOneAndUpdate(
+      { _id: id },
+      { $set: updatedProduct },
+      { new: true },
+    );
+    if (!updatedData) {
+      throw new Error('Product not found');
+    }
+    return updatedData;
+  } catch (error: unknown) {
+    throw new Error('Error updating product: ' + error);
+  }
 };
 
 const deleteProductFromDB = async (id: string) => {
-  const result = await Product.deleteOne({ _id: id });
-  return result;
+  try {
+    const result = await Product.deleteOne({ _id: id });
+
+    if (result.deletedCount === 0) {
+      throw new Error('Product not found');
+    }
+
+    return null;
+  } catch (error: unknown) {
+    throw new Error('Error deleting product: ' + error);
+  }
 };
 
 const getProductBySearchTerm = async (searchTerm: string) => {
