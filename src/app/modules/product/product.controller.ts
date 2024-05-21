@@ -98,28 +98,52 @@ const updateSingleProduct = async (req: Request, res: Response) => {
 };
 
 const deleteProduct = async (req: Request, res: Response) => {
-    try {
-        const { productId } = req.params;
-        const result = await ProductService.deleteProductFromDB(productId);
+  try {
+    const { productId } = req.params;
+    const result = await ProductService.deleteProductFromDB(productId);
 
-        res.status(200).json({
-            success: true,
-            message: "Product deleted successfully!",
-            data: result,
-          });
-    } catch (error:any) {
-        res.status(500).json({
-            success: false,
-            message: error.message || "Something went wrong.",
-            error: error,
-          });
-    }
-}
+    res.status(200).json({
+      success: true,
+      message: 'Product deleted successfully!',
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message || 'Something went wrong.',
+      error: error,
+    });
+  }
+};
+
+const searchProductByTerm = async (req: Request, res: Response) => {
+  const { searchTerm } = req.query;
+
+  if (typeof searchTerm !== 'string') {
+    return res.status(400).json({ message: 'Invalid search term' });
+  }
+
+  try {
+    const result = await ProductService.getProductBySearchTerm(searchTerm);
+    res.status(200).json({
+      success: true,
+      message: `Products matching search term '${searchTerm}' fetched successfully!`,
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message || 'Something went wrong.',
+      error: error,
+    });
+  }
+};
 
 export const ProductControllers = {
   createProduct,
   getAllProducts,
   getSingleProduct,
   updateSingleProduct,
-  deleteProduct
+  deleteProduct,
+  searchProductByTerm,
 };

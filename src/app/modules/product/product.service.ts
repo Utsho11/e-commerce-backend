@@ -25,14 +25,23 @@ const updateProductFromDB = async (
 };
 
 const deleteProductFromDB = async (id: string) => {
-    const result = await Product.deleteOne({ _id: id });
-    return result;
-}
+  const result = await Product.deleteOne({ _id: id });
+  return result;
+};
+
+const getProductBySearchTerm = async (searchTerm: string) => {
+  const regex = new RegExp(searchTerm, 'i');
+  const result = await Product.find({
+    $or: [{ name: regex }, { description: regex }],
+  });
+  return result;
+};
 
 export const ProductService = {
   createProductIntoDB,
   getAllProductsFromDB,
   getSingleProductFromDB,
   updateProductFromDB,
-  deleteProductFromDB
+  deleteProductFromDB,
+  getProductBySearchTerm,
 };
