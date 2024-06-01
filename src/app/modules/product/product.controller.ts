@@ -4,11 +4,10 @@ import productValidationSchema from './product.validation';
 import { ProductService } from './product.service';
 
 const createProduct = async (req: Request, res: Response) => {
-  const { product: productData } = req.body;
   try {
     // data validation using zod
 
-    const zodParseData = productValidationSchema.parse(productData);
+    const zodParseData = productValidationSchema.parse(req.body);
 
     // will call service func to send this data
     const result = await ProductService.createProductIntoDB(zodParseData);
@@ -83,9 +82,8 @@ const getSingleProduct = async (req: Request, res: Response) => {
 const updateSingleProduct = async (req: Request, res: Response) => {
   try {
     const { productId } = req.params;
-    const { product: updatedData } = req.body;
 
-    const zodParseData = productValidationSchema.parse(updatedData);
+    const zodParseData = productValidationSchema.parse(req.body);
 
     const result = await ProductService.updateProductFromDB(
       productId,

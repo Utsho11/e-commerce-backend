@@ -3,9 +3,8 @@ import OrderValidationSchema from './order.validation';
 import { OrderService } from './order.service';
 
 const createOrder = async (req: Request, res: Response) => {
-  const { order: orderData } = req.body;
   try {
-    const zodParseData = OrderValidationSchema.parse(orderData);
+    const zodParseData = OrderValidationSchema.parse(req.body);
 
     const result = await OrderService.createOrderIntoDB(zodParseData);
 
